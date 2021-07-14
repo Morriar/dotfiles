@@ -1,0 +1,24 @@
+#!/bin/bash
+
+CONFIG="$(pwd)/config"
+
+# Configure
+
+sudo chsh -s /bin/bash spin
+
+# Install packages
+
+sudo apt-get install -y bash-completion
+sudo apt-get install -y git-gui gitk
+
+# Link config files
+
+ln -sf "$CONFIG/bashrc" ~/.bashrc
+ln -sf "$CONFIG/profile" ~/.profile
+ln -sf "$CONFIG/gitconfig" ~/.gitconfig
+ln -sf "$CONFIG/gitignore_global" ~/.gitignore_global
+ln -sf "$CONFIG/vimrc" ~/.vimrc
+
+# Run install scripts
+
+"$CONFIG/vim/install"

@@ -1,0 +1,12 @@
+#!/bin/bash
+
+mkdir ~/.vim
+cd ~/.vim
+
+mkdir -p autoload bundle colors
+
+curl -LSso autoload/pathogen.vim https://tpo.pe/pathogen.vim
+
+git clone https://github.com/tomasr/molokai
+mv molokai/colors/molokai.vim colors/
+rm -rf molokai

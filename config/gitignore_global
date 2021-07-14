@@ -1,0 +1,13 @@
+# Mac
+.DS_STORE
+
+# Vim
+*.swp
+*.swo
+*~
+tags
+
+*.BACKUP.*
+*.BASE.*
+*.LOCAL.*
+*.REMOTE.*

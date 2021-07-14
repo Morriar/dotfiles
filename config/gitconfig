@@ -1,0 +1,13 @@
+[user]
+	name = Alexandre Terrasa
+	email = alexandre.terrasa@shopify.com
+[core]
+	editor = vim
+	excludesfile = ~/.gitignore_global
+[diff]
+	algorithm = patience
+[gui]
+	spellingdictionary = en
+	gcwarning = false
+[protocol]
+	version = 2

@@ -1,0 +1,382 @@
+" TODO FiraFont
+
+" ------------------------------------------------------------------------------
+" Default Options
+" ------------------------------------------------------------------------------
+
+" Set window/tab title
+function! SetTitle()
+	let &titlestring=expand("%:t") . ' (' . substitute(expand("%:p:h"), "/Users/" . expand($USER), "~", "") . ')'
+	execute 'silent !echo -e "\033k' . &titlestring . '\033\\"'
+	redraw!
+endfunction
+
+autocmd BufEnter * :call SetTitle()
+
+" Cursor
+set cursorline
+set colorcolumn=80
+
+" Status line
+set number			" Show line number
+set showmode		" Show current mode E/I/V
+set showcmd			" Show last executed command
+set ruler			" Show cursor position
+set autoread		" Warn if the file changed
+
+" Tabs
+set tabpagemax=100		" Max tab showed
+set smartindent
+set autoindent
+set tabstop=4			" Show tab as X spaces
+set softtabstop=4		" Expand tab as X spaces
+set shiftwidth=4		" Indent text with X columns
+
+" Search
+set incsearch
+set hlsearch
+
+" Mouse Support
+set mouse=a
+
+" Theme
+colorscheme molokai
+autocmd ColorScheme * highlight ColorColumn ctermbg=235 guibg=#2d2d27
+set background=dark
+hi Visual ctermbg=237
+
+" Syntax Highligthing
+syntax on					" Color code
+filetype plugin indent on	" Detect from file type
+
+" ------------------------------------------------------------------------------
+" Autocomplete
+" ------------------------------------------------------------------------------
+
+set wildmenu
+set wildmode=full
+set wildignore+=*/tmp/*,*/.nit_compile/,*.so,*.swp,*.zip
+
+" autocompletion with omni-completion and fallback on keyboard
+inoremap <expr> <C-Space> pumvisible() \|\| &omnifunc == '' ?
+			\ "\<lt>C-n>" :
+			\ "\<lt>C-x>\<lt>C-o><c-r>=pumvisible() ?" .
+			\ "\"\\<lt>c-n>\\<lt>c-p>\\<lt>c-n>\" :" .
+			\ "\" \\<lt>bs>\\<lt>C-n>\"\<CR>"
+imap <C-@> <C-Space>
+
+" ------------------------------------------------------------------------------
+" Utils
+" ------------------------------------------------------------------------------
+
+" Trailing spaces
+:highlight TrailingSpaces ctermbg=red guibg=red
+
+function! ShowTrailingSpaces()
+	:match TrailingSpaces /\s\+$/
+	:2match TrailingSpaces /\s\+$\| \+\ze\t/
+	" :2match TrailingSpaces /[^\t]\zs\t\+/
+endfunction
+
+function! TrimTrailingSpaces()
+	:silent! %s/\s\+$\| \+\ze\t//g
+endfunction
+
+autocmd BufWinEnter * :call ShowTrailingSpaces()
+
+" ------------------------------------------------------------------------------
+" Shortcuts
+" ------------------------------------------------------------------------------
+
+" Function keys
+
+" F1: Remove highlight
+nmap <F1> :nohlsearch<CR>
+imap <F1> <Esc><F1>
+vmap <F1> <Esc><F1>
+
+" Arrows motion
+
+" Ctrl-Up/Down: Move words
+noremap <C-Left> b
+inoremap <C-Left> <Esc>lbi
+noremap <C-Right> e
+inoremap <C-Right> <Esc>lei
+
+" Shift-Up: Select previous line
+nnoremap <S-Up> <Esc>v<Up>
+inoremap <S-Up> <Esc>v<Up>
+vnoremap <S-Up> <Up>
+
+" Shift-Down: Select next line
+nnoremap <S-Down> <Esc>v<Down>
+inoremap <S-Down> <Esc>v<Down>
+vnoremap <S-Down> <Down>
+
+" Shift-Left: Select previous char
+nnoremap <S-Left> <Esc>v<Left>
+inoremap <S-Left> <Esc>v<Left>
+vnoremap <S-Left> <Left>
+
+" Shift-Right: Select next char
+nnoremap <S-Right> <Esc>v<Right>
+inoremap <S-Right> <Esc>v<Right>
+vnoremap <S-Right> <Right>
+
+" Ctrl-Shift-Up: Select previous line
+nnoremap <C-S-Up> <Esc>v<Up>
+inoremap <C-S-Up> <Esc>v<Up>
+vnoremap <C-S-Up> <Up>
+
+" Ctrl-Shift-Down: Select next line
+nnoremap <C-S-Down> <Esc>v<Down>
+inoremap <C-S-Down> <Esc>v<Down>
+vnoremap <C-S-Down> <Down>
+
+" Ctrl-Shift-Left: Select previous word
+nmap <C-S-Left> <Esc>v<C-Left>
+imap <C-S-Left> <Esc>v<C-Left>
+vmap <C-S-Left> <C-Left>
+
+" Ctrl-Shift-Right: Select next word
+nmap <C-S-Right> <Esc>v<C-Right>
+imap <C-S-Right> <Esc>v<C-Right>
+vmap <C-S-Right> <C-Right>
+
+" Ctrl-Home: Jump to beginning of document
+nnoremap <C-Home> gg
+inoremap <C-Home> <Esc>ggi
+vnoremap <C-Home> gg
+
+" Ctrl-End: Jump to end of document
+nnoremap <C-End> GG
+inoremap <C-End> <Esc>GGi
+vnoremap <C-End> GG
+
+" Shift-Home: Select to beginning of line
+nnoremap <S-Home> v^
+inoremap <S-Home> <Esc>v^
+vnoremap <S-Home> ^
+
+" Shift-End: Select to end of line
+nnoremap <S-End> v$
+inoremap <S-End> <Esc>v$
+vnoremap <S-End> $
+
+" Ctrl-Shift-Home: Select to beginning of document
+nnoremap <C-S-Home> vgg
+inoremap <C-S-Home> <Esc>vgg
+vnoremap <C-S-Home> gg
+
+" Ctrl-Shift-End: Select to end of document
+nnoremap <C-S-End> vGG
+inoremap <C-S-End> <Esc>vGG
+vnoremap <C-S-End> GG
+
+" Commands
+
+" Ctrl-A: Select All
+nnoremap <C-A> ggvG$
+vnoremap <C-A> <Esc>ggvG$
+inoremap <C-A> <Esc>ggvG$
+
+" Ctrl-B: Visual Block
+nnoremap <C-B> <C-V>
+inoremap <C-B> <Esc><C-V>
+vnoremap <C-B> <Esc><C-V>
+
+" Ctrl-C: Copy
+nnoremap <C-C> yy
+inoremap <C-C> <Esc>yyi
+vnoremap <C-C> y
+
+" Ctrl-D: Delete
+nnoremap <C-D> "_dd
+inoremap <C-D> <Esc>:stopinsert<CR>"_dd
+vnoremap <C-D> "_dd
+
+" Ctrl-F: Find
+nnoremap <C-F> /
+inoremap <C-F> <Esc>/
+vnoremap <silent> <C-F> y/\V<C-R>=escape(@",'/\')<CR><CR>
+
+" Ctrl-J: Jump to definition
+nnoremap <C-J> <C-W><C-]><C-W>T
+inoremap <C-J> <Esc><C-W><C-]><C-W>T
+vnoremap <C-J> <Esc><C-W><C-]><C-W>T
+
+" Ctrl-K: Toogle Comment
+nmap <C-K> \c<Space>
+imap <C-K> <Esc>:stopinsert<CR>\c<Space>
+vmap <C-K> \c<Space>
+
+" Ctrl-L: List definitions
+nnoremap <C-L> :execute("tab tselect " . expand("<cword>"))<CR>
+inoremap <C-L> <Esc>:execute("tab tselect " . expand("<cword>"))<CR>
+vnoremap <C-L> <Esc>:execute("tab tselect " . expand("<cword>"))<CR>
+
+" Ctrl-Q: Quit
+nnoremap <C-Q> :qa<CR>
+inoremap <C-Q> <Esc>:qa<CR>
+vnoremap <C-Q> :qa<CR>
+cnoremap <C-Q> <Esc>:qa<CR>
+
+" Ctrl-S: Save
+nnoremap <C-S> :call TrimTrailingSpaces()<CR>:w<CR>
+vnoremap <C-S> <Esc>:call TrimTrailingSpaces()<CR>:w<CR>
+inoremap <C-S> <Esc>:call TrimTrailingSpaces()<CR>:w<CR>
+cnoremap <C-S> <Esc>:call TrimTrailingSpaces()<CR>:w<CR>
+
+" Ctrl-T: New Tab
+nnoremap <C-T> :tabe<space>
+vnoremap <C-T> <ESC>:tabe<space>
+inoremap <C-T> <ESC>:tabe<space>
+
+" Ctrl-V: Paste
+nnoremap <C-V> Pi<Right>
+inoremap <C-V> <Esc>pi<Right>
+vnoremap <C-V> pi<Right>
+
+" Copy/Paste register behaviour
+set clipboard=unnamed
+nnoremap p pgvy
+vnoremap p pgvy
+
+" Ctrl-W: Close Tab
+nnoremap <C-W> :q<CR>
+inoremap <C-W> <Esc>:q<CR>
+vnoremap <C-W> :q<CR>
+
+" Ctrl-X: Cut
+nnoremap <C-X> dd
+inoremap <C-X> <Esc>ddi
+vnoremap <C-X> d
+
+" Ctrl-Y: Redo
+nnoremap <C-Y> <C-R>
+inoremap <C-Y> <Esc><C-R>
+vnoremap <C-Y> <Esc><C-R>
+
+" Ctrl-Z: Undo
+nnoremap <C-Z> u
+inoremap <C-Z> <Esc>u
+vnoremap <C-Z> <Esc>u
+
+" Tabbing
+nnoremap <Tab> v>
+vnoremap <Tab> >gv
+nnoremap <S-Tab> v<
+inoremap <S-Tab> <Esc>v<i
+vnoremap <S-Tab> <gv
+
+" Enable Backspace key
+map <BS> i<BS>
+imap <BS> <BS>
+vmap <BS> <Del>
+
+" Enable Delete key
+map <Del> i<Del>
+imap <Del> <Del>
+vmap <Del> "_d
+
+" Switch tab
+nmap [ gT
+nmap ] gt
+
+" Enter key
+noremap <CR> i<Right><CR>
+
+" Escape key
+" nmap <> <Esc>
+" imap <> <Esc>
+" vmap <> <Esc>
+
+" No timeout on escape
+set timeoutlen=0 ttimeoutlen=0
+
+" Remove hlsearch on normal escape
+nnoremap <Esc>^[ <Esc>^[
+nnoremap <silent> <Esc> :nohl<CR><Esc>
+
+" Do not move cursor on insert escape
+inoremap <Esc>^[ <Esc>^[
+inoremap <Esc> <Esc>l
+
+" Mouse
+
+" 2*LM: Highlight word under cursor
+nnoremap <silent> <2-LeftMouse> y/\V<C-R>=escape(expand("<cword>"),'/\')<CR><CR><2-LeftMouse>
+
+" Ctrl-LM: Open definition in new tab
+nnoremap <M-LeftMouse> <LeftMouse><C-W><C-]><C-W>T
+inoremap <M-LeftMouse> <Esc><LeftMouse><C-W><C-]><C-W>T
+vnoremap <M-LeftMouse> <Esc><LeftMouse><C-W><C-]><C-W>T
+
+" Ctrl-RM: Open definitions list
+nnoremap <M-RightMouse> :execute("tab tselect " . expand("<cword>"))<CR>
+inoremap <M-RightMouse> <Esc>:execute("tab tselect " . expand("<cword>"))<CR>
+vnoremap <M-RightMouse> <Esc>:execute("tab tselect " . expand("<cword>"))<CR>
+
+" ------------------------------------------------------------------------------
+" Plugins
+" ------------------------------------------------------------------------------
+
+call pathogen#infect()
+
+" NERDCommenter
+let g:NERDSpaceDelims = 1
+let g:NERDCommentEmptyLines = 1
+let g:NERDTrimTrailingWhitespaces = 1
+let g:NERDCustomDelimiters = { 'nit': { 'left': '#' } }
+
+" vim-markdown
+let g:vim_markdown_folding_disabled = 1
+
+" vim-airline-status
+let g:airline_theme='minimalist'
+
+" ------------------------------------------------------------------------------
+" Nit
+" ------------------------------------------------------------------------------
+
+" Autocomplete
+let g:nit_disable_omnifunc = 1
+let g:syntastic_nit_checkers = ['nitpick']
+
+" ------------------------------------------------------------------------------
+" Ruby
+" ------------------------------------------------------------------------------
+
+" Tabs
+autocmd FileType ruby set expandtab			" Expand tabs as spaces
+autocmd FileType ruby set tabstop=2			" Show tabs as X spaces
+autocmd FileType ruby set softtabstop=2		" Expand tabs as X spaces
+autocmd FileType ruby set shiftwidth=2		" Indent text with X columns
+
+" Autocomplete
+autocmd FileType ruby set omnifunc=syntaxcomplete#Complete
+
+" Highlight RBIs
+au BufRead,BufNewFile *.rbi setfiletype ruby
+
+" ------------------------------------------------------------------------------
+" C++
+" ------------------------------------------------------------------------------
+
+" Tabs
+autocmd FileType cpp set expandtab			" Expand tabs as spaces
+autocmd FileType cpp set tabstop=4			" Show tabs as X spaces
+autocmd FileType cpp set softtabstop=4		" Expand tabs as X spaces
+autocmd FileType cpp set shiftwidth=4		" Indent text with X columns
+
+" Autocomplete
+autocmd FileType cpp set omnifunc=syntaxcomplete#Complete
+
+" TODO abbrev, templates and macros?
+" :iabbr vi Vi Impro
+
+" ---------
+"  Licenses
+"  --------
+
+command MozCopy :0r ~/dev/moz_licenses/moz.txt
