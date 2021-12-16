@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -veuo pipefail
+
 mkdir -p ~/.vim
 cd ~/.vim
 
