@@ -10,6 +10,9 @@ sudo chsh -s /bin/bash spin
 
 # Install packages
 
+sudo apt-get remove -y neovim
+sudo apt-get install -y vim
+
 sudo apt-get install -y bash-completion
 sudo apt-get install -y git-gui gitk
 
