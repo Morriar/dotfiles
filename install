@@ -23,6 +23,7 @@ ln -sf "$CONFIG/profile" ~/.profile
 ln -sf "$CONFIG/gitconfig" ~/.gitconfig
 ln -sf "$CONFIG/gitignore_global" ~/.gitignore_global
 ln -sf "$CONFIG/vimrc" ~/.vimrc
+ln -sf "$CONFIG/zlogin" ~/.zlogin
 
 # Run install scripts
 
