@@ -3,3 +3,5 @@ if [ "$TERM_PROGRAM" = "vscode" ]; then
 elif [ -d "${HOME}/src/github.com/Shopify" ]; then
   cd "${HOME}/src/github.com/Shopify/shopify"
 fi
+
+bash
